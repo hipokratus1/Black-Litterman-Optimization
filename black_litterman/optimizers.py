@@ -6,7 +6,7 @@ class EfficientFrontierOptimizer:
     """
     https://ru.wikipedia.org/wiki/Граница_эффективности
     """
-    def init(self, expected_returns, cov_matrix, risk_free_rate=0.02):
+    def __init__(self, expected_returns, cov_matrix, risk_free_rate=0.02):
         self.expected_returns = expected_returns.values
         self.cov_matrix = cov_matrix
         self.risk_free_rate = risk_free_rate

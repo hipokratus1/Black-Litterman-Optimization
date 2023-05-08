@@ -43,7 +43,7 @@ class BlackLitterman:
     """
     https://www.wallstreetmojo.com/black-litterman-model/
     """
-    def init(
+    def __init__(
             self,
             covariance_matrix,
             prior,
