@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.covariance import ledoit_wolf
 
 
-def get_covariance_matrix(prices, frequency=252):
+def get_covariance_matrix(prices, frequency=365):
     """
     ledoit_wolf: http://www.ledoit.net/ole2.pdf, https://habr.com/ru/companies/skillfactory/articles/683498/
 
@@ -19,7 +19,7 @@ def get_covariance_matrix(prices, frequency=252):
     covariance_matrix = pd.DataFrame(shrunk_cov, index=prices.columns, columns=prices.columns) * frequency
     return covariance_matrix
 
-def get_risk_aversion(prices, frequency=252, risk_free_rate=0.02):
+def get_risk_aversion(prices, frequency=365, risk_free_rate=0.02):
     returns = prices.pct_change().dropna()
     R = returns.mean() * frequency
     var = returns.var() * frequency
@@ -64,8 +64,7 @@ class BlackLitterman:
         :param risk_aversion:
         """
         self.N = len(covariance_matrix)
-        self.tokens = list(range(self.N))
-
+        self.tokens = list(covariance_matrix.index)
         self.covariance_matrix = covariance_matrix
 
         self.prior = prior.values.reshape(-1, 1)
@@ -76,13 +75,12 @@ class BlackLitterman:
         self.risk_aversion = risk_aversion
         self.tau = tau
 
+        self.confidences = confidences
         # TODO: add izdorek method here and different way to calculate omega
         if omega:
             self.omega = omega
-        else:
+        else: # heuristic that omega is proportional to the variance of the priors
             self.omega = np.diag(np.diag(tau * self.P @ self.covariance_matrix @ self.P.T))
-
-        self.confidences = confidences
 
         self.__is_valid()
 
