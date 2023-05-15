@@ -9,12 +9,10 @@ import warnings
 import numpy as np
 
 
-def make_predict(coin):
+def make_predict(coin, start='2020-05-01', end='2023-05-01'):
     messari = Messari()
     assets = [coin]
     metric = 'price'
-    start = '2020-05-01'
-    end = '2023-05-01'
     df = messari.get_metric_timeseries(asset_slugs=assets, asset_metric=metric, start=start, end=end)
     df = df[coin]
 

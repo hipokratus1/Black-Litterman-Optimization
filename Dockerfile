@@ -1,11 +1,10 @@
-FROM ubuntu:22.04
+FROM python:3
 
-RUN apt-get update && apt-get install -y python3 python3-pip
+COPY requirements.txt ./
 
-COPY . ./app
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install git+https://github.com/messari/messari-python-api.git
 
-RUN pip install --user -r ./app/requirements.txt
+COPY . .
 
-WORKDIR /app
-
-
+CMD [ "python", "-u", "./portfolio.py" ]
