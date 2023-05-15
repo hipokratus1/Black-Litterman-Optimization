@@ -1,6 +1,5 @@
 import yfinance
-from black_litterman import black_litterman, optimizers
-
+from black_litterman import model, optimizers
 
 class DataLoader:
     def __init__(self, tokens, market='BTC-USD', start=None, end=None):
@@ -49,17 +48,17 @@ def optimize_portfolio(tokens, views):
     market_prices = data.market_prices # smth like S&P 500
     market_capitalizations = data.market_capitalizations # {token: capitalization}
 
-    covariance_matrix = black_litterman.get_covariance_matrix(prices)
-    risk_aversion = black_litterman.get_risk_aversion(market_prices)
+    covariance_matrix = model.get_covariance_matrix(prices)
+    risk_aversion = model.get_risk_aversion(market_prices)
 
-    market_prior = black_litterman.market_implied_prior_returns(
+    market_prior = model.market_implied_prior_returns(
         capitalization=market_capitalizations,
         risk_aversion=risk_aversion,
         covariance_matrix=covariance_matrix,
         risk_free_rate=0.02
     )
 
-    bl = black_litterman.BlackLitterman(
+    bl = model.BlackLitterman(
         covariance_matrix=covariance_matrix,
         prior=market_prior,
         views=views
