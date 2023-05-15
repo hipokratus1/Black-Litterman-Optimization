@@ -3,7 +3,7 @@ from black_litterman import black_litterman, optimizers
 
 
 class DataLoader:
-    def __init__(self, tokens, market='BTC-USD'):
+    def __init__(self, tokens, market='BTC-USD', start=None, end=None):
         market_capitalizations = {}
         for token in tokens:
             try:
@@ -14,10 +14,17 @@ class DataLoader:
 
         self.market_capitalizations = market_capitalizations
 
-        ohlc = yfinance.download(
-            tickers=tokens,
-            period='max'
-        )
+        if start or end:
+            ohlc = yfinance.download(
+                tickers=tokens,
+                start=start,
+                end=end
+            )
+        else:
+            ohlc = yfinance.download(
+                tickers=tokens,
+                period='max'
+            )
         self.prices = ohlc['Adj Close'].dropna()
 
         self.market_prices = yfinance.download(
@@ -27,7 +34,11 @@ class DataLoader:
 
 
 def optimize(tokens, views):
-    data = DataLoader(tokens=tokens)
+    data = DataLoader(
+        tokens=tokens,
+        start='2020-01-01',
+        end='2023-01-01'
+    )
 
     prices = data.prices # dataframe with historical prices of cryptocurrencies
     market_prices = data.market_prices # smth like S&P 500
