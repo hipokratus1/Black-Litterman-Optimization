@@ -1,5 +1,6 @@
 import yfinance
-from src import black_litterman, optimizers
+from src import black_litterman
+from src import optimizers
 
 class DataLoader:
     def __init__(self, tokens, market='BTC-USD', start=None, end=None):

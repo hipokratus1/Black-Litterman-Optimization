@@ -1,4 +1,4 @@
-from make_portfolio import optimize_portfolio
+from src.make_portfolio import optimize_portfolio
 
 if __name__ == '__main__':
     views = {
