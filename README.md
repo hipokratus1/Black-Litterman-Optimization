@@ -7,7 +7,7 @@ git clone git@github.com:hipokratus1/Kursach.git
 ### Использование
 #### Создание docker образа
 ```shell
-docker build -t portfolio_optimize
+docker build -t portfolio_optimize .
 ```
 #### Запуск контейнера 
 ```shell 
