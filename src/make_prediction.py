@@ -6,7 +6,14 @@ from statsmodels.tsa.stattools import adfuller as adf
 from statsmodels.tsa.arima.model import ARIMA
 import warnings
 
-def make_predict(coin, start='2020-05-01', end='2023-05-01', period = 7):
+def is_valid_coin(coin):
+    try:
+        Messari().get_asset(asset_slugs=[coin])
+    except:
+        return False
+    return True
+
+def make_predict(coin, start='2020-05-01', end='2023-05-01', period=7):
     messari = Messari()
     assets = [coin]
     metric = 'price'
