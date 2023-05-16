@@ -3,12 +3,13 @@ import numpy as np
 import cvxpy as cp
 import pandas as pd
 
+from src import utils
 
 class EfficientFrontierOptimizer:
     """
     https://ru.wikipedia.org/wiki/Граница_эффективности
     """
-    def __init__(self, expected_returns, covariance_matrix, risk_free_rate=0.02):
+    def __init__(self, expected_returns, covariance_matrix, risk_free_rate=utils.RISK_FREE_RATE_DEFAULT):
         self.expected_returns = expected_returns.values
         self.covariance_matrix = covariance_matrix
         self.risk_free_rate = risk_free_rate

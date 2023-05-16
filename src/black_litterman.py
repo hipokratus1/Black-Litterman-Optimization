@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn.covariance import ledoit_wolf
 
+from src import utils
 
 def get_covariance_matrix(prices, frequency=365):
     """
@@ -19,13 +20,13 @@ def get_covariance_matrix(prices, frequency=365):
     covariance_matrix = pd.DataFrame(shrunk_cov, index=prices.columns, columns=prices.columns) * frequency
     return covariance_matrix
 
-def get_risk_aversion(prices, frequency=365, risk_free_rate=0.02):
+def get_risk_aversion(prices, frequency=365, risk_free_rate=utils.RISK_FREE_RATE_DEFAULT):
     returns = prices.pct_change().dropna()
     R = returns.mean() * frequency
     var = returns.var() * frequency
     return (R -  risk_free_rate) / var
 
-def market_implied_prior_returns(capitalization, risk_aversion, covariance_matrix, risk_free_rate=0.02):
+def market_implied_prior_returns(capitalization, risk_aversion, covariance_matrix, risk_free_rate=utils.RISK_FREE_RATE_DEFAULT):
     """
     :param capitalization: market capitalization of tokens
     :param risk_aversion: risk aversion from get_risk_aversion method
