@@ -5,6 +5,9 @@ STOP = 'STOP'
 EXIT = 'EXIT'
 
 def no_print(func):
+    """
+    Decorator for removing all prints in function
+    """
     def _wrapper(*args, **kwargs):
         sys.stdout = open(os.devnull, 'w')
         output = func(*args, **kwargs)

@@ -14,7 +14,7 @@ def get_tokens(tokens=None, again=False):
         elif parse == utils.EXIT:
             exit(0)
         for _token in parse.strip().split():
-            if not make_prediction.is_valid_coin(_token):
+            if not make_prediction.is_valid_token(_token):
                 print(f'Token {_token} is incorrect')
                 continue
             else:

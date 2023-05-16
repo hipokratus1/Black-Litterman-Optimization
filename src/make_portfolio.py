@@ -4,6 +4,9 @@ from src import optimizers
 from src import utils
 
 class DataLoader:
+    """
+    Helper class for loading data from messari and/or yahoo finance APIs
+    """
     def __init__(self, tokens, market='BTC-USD', start=None, end=None):
         market_capitalizations = {}
         for token in tokens:
@@ -46,6 +49,10 @@ class DataLoader:
 
 
 def optimize_portfolio(tokens, views, risk_free_rate=utils.RISK_FREE_RATE_DEFAULT):
+    """
+    Helper function for portfolio optimization pipeline
+    Originally was an ipynb
+    """
     data = DataLoader(
         tokens=tokens,
     )
