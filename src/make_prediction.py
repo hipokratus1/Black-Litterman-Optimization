@@ -6,7 +6,20 @@ from statsmodels.tsa.stattools import adfuller as adf
 from statsmodels.tsa.arima.model import ARIMA
 import warnings
 
-def make_predict(coin, start='2020-05-01', end='2023-05-01', period = 7):
+def is_valid_token(token):
+    """
+    Helper function to check if token exists in messari
+    """
+    try:
+        Messari().get_asset(asset_slugs=[token])
+    except:
+        return False
+    return True
+
+def make_predict(coin, start='2020-05-01', end='2023-05-01', period=7):
+    """
+    Main prediction function that uses ARIMA to predict cryptocurrency price
+    """
     messari = Messari()
     assets = [coin]
     metric = 'price'

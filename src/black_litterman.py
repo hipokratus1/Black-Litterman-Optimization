@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn.covariance import ledoit_wolf
 
+from src import utils
 
 def get_covariance_matrix(prices, frequency=365):
     """
@@ -19,13 +20,16 @@ def get_covariance_matrix(prices, frequency=365):
     covariance_matrix = pd.DataFrame(shrunk_cov, index=prices.columns, columns=prices.columns) * frequency
     return covariance_matrix
 
-def get_risk_aversion(prices, frequency=365, risk_free_rate=0.02):
+def get_risk_aversion(prices, frequency=365, risk_free_rate=utils.RISK_FREE_RATE_DEFAULT):
+    """
+    Helper function to calculate a risk aversion
+    """
     returns = prices.pct_change().dropna()
     R = returns.mean() * frequency
     var = returns.var() * frequency
     return (R -  risk_free_rate) / var
 
-def market_implied_prior_returns(capitalization, risk_aversion, covariance_matrix, risk_free_rate=0.02):
+def market_implied_prior_returns(capitalization, risk_aversion, covariance_matrix, risk_free_rate=utils.RISK_FREE_RATE_DEFAULT):
     """
     :param capitalization: market capitalization of tokens
     :param risk_aversion: risk aversion from get_risk_aversion method
@@ -86,7 +90,7 @@ class BlackLitterman:
 
     def __convert_views(self, views):
         """
-        helper function to convert dataframe views to P, Q
+        Helper function to convert dataframe views to P, Q
         P: matrix that identifies the assets involved in the views.
         Q: view Vector
         """
@@ -100,7 +104,7 @@ class BlackLitterman:
 
     def __is_valid(self) -> None:
         """
-        helper function to check that all parameters are correct
+        Helper function to check that all parameters are correct
         """
         # TODO: more validation
         if self.covariance_matrix is None:
@@ -120,7 +124,8 @@ class BlackLitterman:
 
     def bl_returns(self) -> pd.Series:
         """
-        posterior estimate of returns
+        Main output of Black-Litterman model
+        A vector of returns
         """
         tau_cov = np.linalg.inv(np.dot(self.tau, self.covariance_matrix))
 
@@ -138,7 +143,7 @@ class BlackLitterman:
 
     def bl_covariance(self):
         """
-        posterior estimate of covariance
+        Helper output for portfolio optimization
         """
         # TODO: add better optimizer, this function might be useful
         tau_cov = np.linalg.inv(np.dot(self.tau, self.covariance_matrix))
@@ -156,7 +161,7 @@ class BlackLitterman:
 
     def simple_weights(self):
         """
-        simple variant of optimizer
+        Simple variant of optimizer, use only for debug
         """
         estimate_return = self.bl_returns()
 
