@@ -86,8 +86,10 @@ def optimize_portfolio(tokens, views, risk_free_rate=utils.RISK_FREE_RATE_DEFAUL
         L2_reg=True
     )
 
-    return frontier.get_weights(
-        df=True,
+    weights = frontier.get_weights(
+        df=False,
         clean=True
     )
+
+    return weights
 

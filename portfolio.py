@@ -8,7 +8,7 @@ def get_tokens(tokens=None, again=False):
 
     _tokens = set() if not tokens else tokens
     while True:
-        parse = input()
+        parse = input().strip()
         if parse == utils.STOP:
             break
         elif parse == utils.EXIT:
@@ -48,4 +48,7 @@ if __name__ == '__main__':
     tokens = [token + '-USD' for token in tokens]
     weights = make_portfolio.optimize_portfolio(tokens, views, risk_free_rate=int(risk_free_rate) / 100)
 
-    print(f'Result: {weights}')
+    print('Result:')
+
+    for token, percent in weights.items():
+        print(f'{token}: {percent}')
