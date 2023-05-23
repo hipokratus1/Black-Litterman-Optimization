@@ -26,10 +26,11 @@ def get_tokens(tokens=None, again=False):
 
     return output
 
-if __name__ == '__main__':
+
+def run():
     tokens = get_tokens()
 
-    while len(tokens) <= 1: # when there is only 1 token no reason to make a prediction
+    while len(tokens) <= 1:  # when there is only 1 token no reason to make a prediction
         print(f'Add more than 1 token')
         tokens = get_tokens(tokens=tokens, again=True)
 
@@ -45,10 +46,13 @@ if __name__ == '__main__':
         views[token + '-USD'] = prediction
         print(f'Prediction is: {prediction:.5f}')
 
-    tokens = [token + '-USD' for token in tokens]
-    weights = make_portfolio.optimize_portfolio(tokens, views, risk_free_rate=int(risk_free_rate) / 100)
+    yahoo_tokens = [token + '-USD' for token in tokens]
+    weights = make_portfolio.optimize_portfolio(yahoo_tokens, views, risk_free_rate=int(risk_free_rate) / 100)
 
     print('Result:')
 
-    for token, percent in weights.items():
+    for token, percent in zip(tokens, weights.values()):
         print(f'{token}: {percent}')
+
+if __name__ == '__main__':
+    run()
