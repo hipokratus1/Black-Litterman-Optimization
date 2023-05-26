@@ -1,0 +1,6 @@
+yfinance==0.2.18
+cvxpy
+scikit_learn
+statsmodels
+numpy
+pandas
